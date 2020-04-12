@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Getter @Setter @EqualsAndHashCode(of = "id")
@@ -52,4 +53,7 @@ public class Account {
 
     private boolean studyUpdatedByWeb; // 스터디에 대한 바뀐 정보들을 웹으로 받을 것 인가
 
+    public void generateEmailCheckToken() {
+        this.emailCheckToken= UUID.randomUUID().toString();
+    }
 }

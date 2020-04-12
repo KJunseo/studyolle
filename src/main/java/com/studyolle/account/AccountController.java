@@ -2,6 +2,8 @@ package com.studyolle.account;
 
 import com.studyolle.domain.Account;
 import lombok.RequiredArgsConstructor;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -18,6 +20,7 @@ public class AccountController {
 
     private final SignUpFormValidator signUpFormValidator;
     private final AccountRepository accountRepository;
+    private final JavaMailSender javaMailSender;
 
     /* signUpForm이라는 데이터를 받을 때 바인더 설정
        (더해준 validator도 자동으로 검사해준다.) */
@@ -50,6 +53,16 @@ public class AccountController {
                 .build();
 
         Account newAccount = accountRepository.save(account);
+
+        newAccount.generateEmailCheckToken(); // 토큰 만들기
+
+        /* 메세지 보내는 부분 */
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(newAccount.getEmail());
+        mailMessage.setSubject("스터디올래, 회원 가입 인증"); // 이메일 제목
+        mailMessage.setText("/check-email-token?token=" + newAccount.getEmailCheckToken() +
+                "&email=" + newAccount.getEmail()); // 이메일 본문
+        javaMailSender.send(mailMessage);
 
         return "redirect:/";
     }
