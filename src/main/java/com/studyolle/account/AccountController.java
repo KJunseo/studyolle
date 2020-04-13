@@ -19,8 +19,7 @@ import javax.validation.Valid;
 public class AccountController {
 
     private final SignUpFormValidator signUpFormValidator;
-    private final AccountRepository accountRepository;
-    private final JavaMailSender javaMailSender;
+    private final AccountService accountService;
 
     /* signUpForm이라는 데이터를 받을 때 바인더 설정
        (더해준 validator도 자동으로 검사해준다.) */
@@ -43,27 +42,10 @@ public class AccountController {
             return "account/sign-up";
         }
 
-        Account account = Account.builder()
-                .email(signUpForm.getEmail())
-                .nickname(signUpForm.getNickname())
-                .password(signUpForm.getPassword()) // TODO 후에 password encoding 필요
-                .studyCreatedByWeb(true)
-                .studyEnrollmentResultByWeb(true)
-                .studyUpdatedByWeb(true)
-                .build();
-
-        Account newAccount = accountRepository.save(account);
-
-        newAccount.generateEmailCheckToken(); // 토큰 만들기
-
-        /* 메세지 보내는 부분 */
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(newAccount.getEmail());
-        mailMessage.setSubject("스터디올래, 회원 가입 인증"); // 이메일 제목
-        mailMessage.setText("/check-email-token?token=" + newAccount.getEmailCheckToken() +
-                "&email=" + newAccount.getEmail()); // 이메일 본문
-        javaMailSender.send(mailMessage);
+        accountService.processNewAccount(signUpForm);
 
         return "redirect:/";
     }
+
+
 }
