@@ -6,6 +6,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 
@@ -17,6 +18,7 @@ public class AccountService {
     private final JavaMailSender javaMailSender;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional // @Transactional을 붙이지 않으면, detached 상태이기 때문에 generateEmailCheckToken()가 DB반영 x
     public void processNewAccount(SignUpForm signUpForm) {
         Account newAccount = saveNewAccount(signUpForm);
         newAccount.generateEmailCheckToken(); // 토큰 만들기
