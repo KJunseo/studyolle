@@ -44,7 +44,8 @@ public class AccountController {
             return "account/sign-up";
         }
 
-        accountService.processNewAccount(signUpForm);
+        Account account = accountService.processNewAccount(signUpForm);
+        accountService.login(account);
         return "redirect:/";
     }
 
@@ -68,11 +69,10 @@ public class AccountController {
 
         // 정상적인 경우 - 회원 가입 완료
         account.completeSignUp();
-
+        accountService.login(account);
         model.addAttribute("numberOfUser", accountRepository.count());
         model.addAttribute("nickname", account.getNickname());
         return view;
     }
-
 
 }

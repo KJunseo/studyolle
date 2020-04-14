@@ -16,6 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.then;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -43,7 +45,8 @@ class AccountControllerTest {
             .param("email", "21500153@handong.edu"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("error"))
-                .andExpect(view().name("account/checked-email"));
+                .andExpect(view().name("account/checked-email"))
+                .andExpect(unauthenticated());
 
     }
 
@@ -66,7 +69,8 @@ class AccountControllerTest {
                 .andExpect(model().attributeDoesNotExist("error"))
                 .andExpect(model().attributeExists("nickname"))
                 .andExpect(model().attributeExists("numberOfUser"))
-                .andExpect(view().name("account/checked-email"));
+                .andExpect(view().name("account/checked-email"))
+                .andExpect(authenticated().withUsername("junseo"));
 
     }
 
@@ -77,7 +81,8 @@ class AccountControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(view().name("account/sign-up"))
-                .andExpect(model().attributeExists("signUpForm"));
+                .andExpect(model().attributeExists("signUpForm"))
+                .andExpect(unauthenticated());
     }
 
     @DisplayName("회원가입 처리 - 입력값 오류")
@@ -89,7 +94,8 @@ class AccountControllerTest {
             .param("password", "12345")
             .with(csrf())) // form 테스트인 경우, csrf 토큰이 없다면 403에러가 난다. 시큐리티에서 인증을 거치지 않아도 된다고 설정해줬어도, 안전하지 않은 요청은 금지하기 때문
                 .andExpect(status().isOk())
-                .andExpect(view().name("account/sign-up"));
+                .andExpect(view().name("account/sign-up"))
+                .andExpect(unauthenticated());
 
     }
 
@@ -102,7 +108,8 @@ class AccountControllerTest {
                 .param("password", "12345678")
                 .with(csrf())) // form 테스트인 경우, csrf 토큰이 없다면 403에러가 난다. 시큐리티에서 인증을 거치지 않아도 된다고 설정해줬어도, 안전하지 않은 요청은 금지하기 때문
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+                .andExpect(view().name("redirect:/"))
+                .andExpect(authenticated().withUsername("junseo"));
 
         Account account = accountRepository.findByEmail("21500153@handong.edu");
 
