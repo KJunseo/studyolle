@@ -59,7 +59,7 @@ public class AccountService {
      실제로 authentication manager가 하는 역할이랑 같은 역할을 함 */
     public void login(Account account) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                account.getNickname(),
+                new UserAccount(account),
                 account.getPassword(),
                 List.of(new SimpleGrantedAuthority("ROLE_USER"))); // 1: principal, 2: 비밀번호, 2: 권한
         SecurityContextHolder.getContext().setAuthentication(token);
