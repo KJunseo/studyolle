@@ -23,6 +23,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers(HttpMethod.GET, "/profile/*").permitAll()
                 // 나머지 요청들은 인증을 거쳐야함
                 .anyRequest().authenticated();
+
+        // 커스텀 로그인 폼 사용
+        http.formLogin()
+                .loginPage("/login").permitAll();
+
+        http.logout()
+                .logoutSuccessUrl("/");
     }
 
     /* static한 리소스들(로고 같은 것)에는 시큐리티 필터를 적용하지 않게 하는 것 */

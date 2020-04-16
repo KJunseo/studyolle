@@ -6,8 +6,8 @@
 <head th:fragment="head">
     <meta charset="UTF-8">
     <title>StudyOlle </title>
-    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.min.css" />
     <!-- <script /> 이런식으로 하면 적용 안된다. <script></script> 이런식으로 할 것 -->
     <script src="/node_modules/jdenticon/dist/jdenticon.min.js"></script>
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
@@ -38,23 +38,23 @@
 
         <ul class="navbar-nav justify-content-end">
             <li class="nav-item" sec:authorize="!isAuthenticated()">
-                <a class="nav-link" href="#" th:href="@{/login}">로그인</a>
+                <a class="nav-link" th:href="@{/login}">로그인</a>
             </li>
             <li class="nav-item" sec:authorize="!isAuthenticated()">
-                <a class="nav-link" href="#" th:href="@{/sign-up}">가입</a>
+                <a class="nav-link" th:href="@{/sign-up}">가입</a>
             </li>
             <li class="nav-item" sec:authorize="isAuthenticated()">
-                <a class="nav-link" href="#" th:href="@{/notifications}">
+                <a class="nav-link" th:href="@{/notifications}">
                     <i class="fa fa-bell-o" aria-hidden="true"></i>
                 </a>
             </li>
             <li class="nav-item" sec:authorize="isAuthenticated()">
-                <a class="nav-link btn btn-outline-primary" href="#" th:href="@{/notifications}">
+                <a class="nav-link btn btn-outline-primary" th:href="@{/notifications}">
                     <i class="fa fa-plus" aria-hidden="true"></i> 스터디 개설
                 </a>
             </li>
             <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
-                <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-toggle="dropdown"
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
                     <svg data-jdenticon-value="user127" th:data-jdenticon-value="${#authentication.name}"
                          width="24" height="24" class="rounded border bg-light"></svg>
@@ -82,5 +82,27 @@
         <small class="d-block mb-3 text-muted">&copy; 2020</small>
     </div>
 </footer>
+
+<script type="application/javascript" th:fragment="form-validation">
+    (function () {
+        'use strict';
+
+        window.addEventListener('load', function () {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+
+            // Loop over them and prevent submission
+            Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        }, false)
+    }())
+</script>
 
 </html>
