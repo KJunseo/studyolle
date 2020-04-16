@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<!-- th:replace -> 태그 포함해서 전체 교체 -->
-<!-- th:insert -> 태그 내부에 삽입 -->
+      xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments.html :: head"></head>
 <body class="bg-light">
     <div th:replace="fragments.html :: main-nav"></div>
@@ -19,11 +16,5 @@
 
         <div th:replace="fragments.html :: footer"></div>
     </div>
-
-    <script type="application/javascript">
-        (function () {
-
-        }())
-    </script>
 </body>
 </html>
