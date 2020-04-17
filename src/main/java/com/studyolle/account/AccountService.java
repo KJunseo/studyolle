@@ -19,6 +19,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Service
+@Transactional // @Transactional을 붙이지 않으면, detached 상태이기 때문에 DB반영 x
 @RequiredArgsConstructor
 public class AccountService implements UserDetailsService {
 
@@ -26,7 +27,6 @@ public class AccountService implements UserDetailsService {
     private final JavaMailSender javaMailSender;
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional // @Transactional을 붙이지 않으면, detached 상태이기 때문에 generateEmailCheckToken()가 DB반영 x
     public Account processNewAccount(SignUpForm signUpForm) {
         Account newAccount = saveNewAccount(signUpForm);
         newAccount.generateEmailCheckToken(); // 토큰 만들기
@@ -68,6 +68,7 @@ public class AccountService implements UserDetailsService {
         SecurityContextHolder.getContext().setAuthentication(token);
     }
 
+    @Transactional(readOnly = true) // 데이터 변경이 없으므로
     @Override
     public UserDetails loadUserByUsername(String emailOrNickname) throws UsernameNotFoundException {
         Account account = accountRepository.findByEmail(emailOrNickname);
@@ -80,5 +81,10 @@ public class AccountService implements UserDetailsService {
         }
 
         return new UserAccount(account);
+    }
+
+    public void completeSignUp(Account account) {
+        account.completeSignUp();
+        login(account);
     }
 }
