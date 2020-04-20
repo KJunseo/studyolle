@@ -94,6 +94,7 @@ public class AccountService implements UserDetailsService {
         account.setBio(profile.getBio());
         account.setOccupation(profile.getOccupation());
         account.setLocation(profile.getLocation());
+        account.setProfileImage(profile.getProfileImage());
 
         accountRepository.save(account); // id값을 통해 기존 정보 update
     }
