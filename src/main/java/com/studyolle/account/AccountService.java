@@ -98,4 +98,9 @@ public class AccountService implements UserDetailsService {
 
         accountRepository.save(account); // id값을 통해 기존 정보 update
     }
+
+    public void updatePassword(Account account, String newPassword) {
+        account.setPassword(passwordEncoder.encode(newPassword));
+        accountRepository.save(account); // merge
+    }
 }
