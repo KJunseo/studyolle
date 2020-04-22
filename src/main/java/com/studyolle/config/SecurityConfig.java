@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 // 해당 요청들은 GET이나 POST 상관 없이 모두 허용
                 .mvcMatchers("/", "/login", "/sign-up", "/check-email-token",
-                        "/email-login", "/check-email-login", "/login-link").permitAll()
+                        "/email-login", "/login-by-email").permitAll()
                 // 프로필 관련 요청은 GET 요청만 허용
                 .mvcMatchers(HttpMethod.GET, "/profile/*").permitAll()
                 // 나머지 요청들은 인증을 거쳐야함
