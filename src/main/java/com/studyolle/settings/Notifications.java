@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 public class Notifications {
 
     private boolean studyCreatedByEmail; // 스터디가 만들어졌다는 것을 이메일로 받을 것 인가
@@ -19,13 +18,4 @@ public class Notifications {
     private boolean studyUpdatedByEmail; // 스터디에 대한 바뀐 정보들을 이메일로 받을 것 인가
 
     private boolean studyUpdatedByWeb; // 스터디에 대한 바뀐 정보들을 웹으로 받을 것 인가
-
-    public Notifications(Account account) {
-        this.studyCreatedByEmail = account.isStudyCreatedByEmail();
-        this.studyCreatedByWeb = account.isStudyCreatedByWeb();
-        this.studyEnrollmentResultByEmail = account.isStudyEnrollmentResultByEmail();
-        this.studyEnrollmentResultByWeb = account.isStudyEnrollmentResultByWeb();
-        this.studyUpdatedByEmail = account.isStudyUpdatedByEmail();
-        this.studyUpdatedByWeb = account.isStudyUpdatedByWeb();
-    }
 }

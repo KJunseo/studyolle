@@ -4,6 +4,7 @@ import com.studyolle.domain.Account;
 import com.studyolle.settings.Notifications;
 import com.studyolle.settings.Profile;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,6 +29,7 @@ public class AccountService implements UserDetailsService {
     private final AccountRepository accountRepository;
     private final JavaMailSender javaMailSender;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
     public Account processNewAccount(SignUpForm signUpForm) {
         Account newAccount = saveNewAccount(signUpForm);
@@ -91,12 +93,7 @@ public class AccountService implements UserDetailsService {
     }
 
     public void updateProfile(Account account, Profile profile) {
-        account.setUrl(profile.getUrl());
-        account.setBio(profile.getBio());
-        account.setOccupation(profile.getOccupation());
-        account.setLocation(profile.getLocation());
-        account.setProfileImage(profile.getProfileImage());
-
+        modelMapper.map(profile, account);
         accountRepository.save(account); // id값을 통해 기존 정보 update
     }
 
@@ -106,12 +103,7 @@ public class AccountService implements UserDetailsService {
     }
 
     public void updateNotifications(Account account, Notifications notifications) {
-        account.setStudyCreatedByEmail(notifications.isStudyCreatedByEmail());
-        account.setStudyCreatedByWeb(notifications.isStudyCreatedByWeb());
-        account.setStudyEnrollmentResultByEmail(notifications.isStudyEnrollmentResultByEmail());
-        account.setStudyEnrollmentResultByWeb(notifications.isStudyEnrollmentResultByWeb());
-        account.setStudyUpdatedByEmail(notifications.isStudyUpdatedByEmail());
-        account.setStudyUpdatedByWeb(notifications.isStudyUpdatedByWeb());
+        modelMapper.map(notifications, account);
         accountRepository.save(account);
     }
 }
