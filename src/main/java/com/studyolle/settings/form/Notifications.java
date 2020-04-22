@@ -1,8 +1,6 @@
-package com.studyolle.settings;
+package com.studyolle.settings.form;
 
-import com.studyolle.domain.Account;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 public class Notifications {

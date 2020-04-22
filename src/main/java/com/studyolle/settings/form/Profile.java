@@ -1,8 +1,6 @@
-package com.studyolle.settings;
+package com.studyolle.settings.form;
 
-import com.studyolle.domain.Account;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 // form을 채울 객체

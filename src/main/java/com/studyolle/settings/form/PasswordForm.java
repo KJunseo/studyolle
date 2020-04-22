@@ -1,7 +1,6 @@
-package com.studyolle.settings;
+package com.studyolle.settings.form;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 @Data
