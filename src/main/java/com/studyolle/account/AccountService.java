@@ -1,6 +1,7 @@
 package com.studyolle.account;
 
 import com.studyolle.domain.Account;
+import com.studyolle.domain.Tag;
 import com.studyolle.settings.form.Notifications;
 import com.studyolle.settings.form.Profile;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional // @Transactional을 붙이지 않으면, detached 상태이기 때문에 DB반영 x
@@ -120,5 +122,12 @@ public class AccountService implements UserDetailsService {
         mailMessage.setText("/login-by-email?token=" + account.getEmailCheckToken() +
                 "&email=" + account.getEmail());
         javaMailSender.send(mailMessage);
+    }
+
+    public void addTag(Account account, Tag tag) {
+        Optional<Account> byId = accountRepository  // detached 상태를 persistent 상태로 바꿔주기 위해 불러옴.
+                .findById(account.getId());         // detached 상태의 객체는 릴레이션을 나타내는 필드(ex. @ManyToMany, @OneToMany 등)의 값들이 전부 null이다.
+                                                    // lazy loading도 불가능하다.
+        byId.ifPresent(a->a.getTags().add(tag));
     }
 }
