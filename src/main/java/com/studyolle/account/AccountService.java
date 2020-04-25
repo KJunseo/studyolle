@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional // @Transactional을 붙이지 않으면, detached 상태이기 때문에 DB반영 x
@@ -129,5 +130,11 @@ public class AccountService implements UserDetailsService {
                 .findById(account.getId());         // detached 상태의 객체는 릴레이션을 나타내는 필드(ex. @ManyToMany, @OneToMany 등)의 값들이 전부 null이다.
                                                     // lazy loading도 불가능하다.
         byId.ifPresent(a->a.getTags().add(tag));
+    }
+
+    public Set<Tag> getTags(Account account) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+
+        return byId.orElseThrow().getTags();
     }
 }
