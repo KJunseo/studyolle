@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -54,6 +55,9 @@ public class Account {
     private boolean studyUpdatedByEmail; // 스터디에 대한 바뀐 정보들을 이메일로 받을 것 인가
 
     private boolean studyUpdatedByWeb; // 스터디에 대한 바뀐 정보들을 웹으로 받을 것 인가
+
+    @ManyToMany
+    private Set<Tag> tags; // Account에서 Tag를 참조(단반향)
 
     public void generateEmailCheckToken() {
         this.emailCheckToken= UUID.randomUUID().toString();
