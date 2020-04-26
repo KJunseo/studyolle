@@ -2,8 +2,10 @@ package com.studyolle.account;
 
 import com.studyolle.domain.Account;
 import com.studyolle.domain.Tag;
+import com.studyolle.domain.Zone;
 import com.studyolle.settings.form.Notifications;
 import com.studyolle.settings.form.Profile;
+import com.studyolle.zone.ZoneRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
@@ -32,6 +34,7 @@ public class AccountService implements UserDetailsService {
     private final JavaMailSender javaMailSender;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
+    private final ZoneRepository zoneRepository;
 
     public Account processNewAccount(SignUpForm signUpForm) {
         Account newAccount = saveNewAccount(signUpForm);
@@ -126,13 +129,26 @@ public class AccountService implements UserDetailsService {
 
     public Set<Tag> getTags(Account account) {
         Optional<Account> byId = accountRepository.findById(account.getId());
-
         return byId.orElseThrow().getTags();
     }
 
     public void removeTag(Account account, Tag tag) {
         Optional<Account> byId = accountRepository.findById(account.getId());
-
         byId.ifPresent(a->a.getTags().remove(tag));
+    }
+
+    public Set<Zone> getZones(Account account) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        return byId.orElseThrow().getZones();
+    }
+
+    public void addZone(Account account, Zone zone) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        byId.ifPresent(a -> a.getZones().add(zone));
+    }
+
+    public void removeZone(Account account, Zone zone) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        byId.ifPresent(a -> a.getZones().remove(zone));
     }
 }

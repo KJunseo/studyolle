@@ -60,6 +60,9 @@ public class Account {
     @ManyToMany
     private Set<Tag> tags = new HashSet<>(); // Account에서 Tag를 참조(단반향)
 
+    @ManyToMany
+    private Set<Zone> zones = new HashSet<>();
+
     public void generateEmailCheckToken() {
         this.emailCheckToken= UUID.randomUUID().toString();
         this.emailCheckTokenGeneratedAt = LocalDateTime.now();
