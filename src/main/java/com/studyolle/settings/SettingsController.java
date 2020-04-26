@@ -3,7 +3,7 @@ package com.studyolle.settings;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.studyolle.account.AccountService;
-import com.studyolle.account.CurrentUser;
+import com.studyolle.account.CurrentAccount;
 import com.studyolle.domain.Account;
 import com.studyolle.domain.Tag;
 import com.studyolle.settings.form.*;
@@ -55,7 +55,7 @@ public class SettingsController {
     }
 
     @GetMapping(PROFILE)
-    public String updateProfileForm(@CurrentUser Account account, Model model) {
+    public String updateProfileForm(@CurrentAccount Account account, Model model) {
         model.addAttribute(account);
         model.addAttribute(modelMapper.map(account, Profile.class));
 
@@ -63,7 +63,7 @@ public class SettingsController {
     }
 
     @PostMapping(PROFILE)
-    public String updateProfile(@CurrentUser Account account, @Valid Profile profile, Errors errors,
+    public String updateProfile(@CurrentAccount Account account, @Valid Profile profile, Errors errors,
                                 Model model, RedirectAttributes attributes) {
         if(errors.hasErrors()) {
             model.addAttribute(account);
@@ -76,14 +76,14 @@ public class SettingsController {
     }
 
     @GetMapping(PASSWORD)
-    public String updatePasswordForm(@CurrentUser Account account, Model model) {
+    public String updatePasswordForm(@CurrentAccount Account account, Model model) {
         model.addAttribute(account);
         model.addAttribute(new PasswordForm());
         return SETTINGS + PASSWORD;
     }
 
     @PostMapping(PASSWORD)
-    public String updatePassword(@CurrentUser Account account, @Valid PasswordForm passwordForm,
+    public String updatePassword(@CurrentAccount Account account, @Valid PasswordForm passwordForm,
                                  Errors errors, Model model, RedirectAttributes attributes) {
         if(errors.hasErrors()) {
             model.addAttribute(account);
@@ -96,14 +96,14 @@ public class SettingsController {
     }
 
     @GetMapping(NOTIFICATIONS)
-    public String updateNotificationsForm(@CurrentUser Account account, Model model) {
+    public String updateNotificationsForm(@CurrentAccount Account account, Model model) {
         model.addAttribute(account);
         model.addAttribute(modelMapper.map(account, Notifications.class));
         return SETTINGS + NOTIFICATIONS;
     }
 
     @PostMapping(NOTIFICATIONS)
-    public String updateNotifications(@CurrentUser Account account, @Valid Notifications notifications, Errors errors,
+    public String updateNotifications(@CurrentAccount Account account, @Valid Notifications notifications, Errors errors,
                                       Model model, RedirectAttributes attributes) {
         if(errors.hasErrors()) {
             model.addAttribute(account);
@@ -116,14 +116,14 @@ public class SettingsController {
     }
 
     @GetMapping(ACCOUNT)
-    public String updateAccountForm(@CurrentUser Account account, Model model) {
+    public String updateAccountForm(@CurrentAccount Account account, Model model) {
         model.addAttribute(account);
         model.addAttribute(modelMapper.map(account, NicknameForm.class));
         return SETTINGS + ACCOUNT;
     }
 
     @PostMapping(ACCOUNT)
-    public String updateAccount(@CurrentUser Account account, @Valid NicknameForm nicknameForm, Errors errors,
+    public String updateAccount(@CurrentAccount Account account, @Valid NicknameForm nicknameForm, Errors errors,
                                 Model model, RedirectAttributes attributes) {
         if(errors.hasErrors()) {
             model.addAttribute(account);
@@ -136,7 +136,7 @@ public class SettingsController {
     }
 
     @GetMapping(TAGS)
-    public String updateTags(@CurrentUser Account account, Model model) throws JsonProcessingException {
+    public String updateTags(@CurrentAccount Account account, Model model) throws JsonProcessingException {
         model.addAttribute(account);
         Set<Tag> tags = accountService.getTags(account);
         model.addAttribute("tags", tags.stream().map(Tag::getTitle).collect(Collectors.toList()));
@@ -149,7 +149,7 @@ public class SettingsController {
 
     @PostMapping(TAGS + "/add")
     @ResponseBody
-    public ResponseEntity addTag(@CurrentUser Account account, @RequestBody TagForm tagForm) { // 데이터가 요청 본문에 들어오기 때문에 @RequestBody
+    public ResponseEntity addTag(@CurrentAccount Account account, @RequestBody TagForm tagForm) { // 데이터가 요청 본문에 들어오기 때문에 @RequestBody
         String title = tagForm.getTagTitle();
 
 //        optional을 사용하는 경우(Optional<Tag> )
@@ -169,7 +169,7 @@ public class SettingsController {
 
     @PostMapping(TAGS + "/remove")
     @ResponseBody
-    public ResponseEntity removeTag(@CurrentUser Account account, @RequestBody TagForm tagForm) { // 데이터가 요청 본문에 들어오기 때문에 @RequestBody
+    public ResponseEntity removeTag(@CurrentAccount Account account, @RequestBody TagForm tagForm) { // 데이터가 요청 본문에 들어오기 때문에 @RequestBody
         String title = tagForm.getTagTitle();
 
         Tag tag = tagRepository.findByTitle(title);
