@@ -6,9 +6,11 @@
 <head th:fragment="head">
     <meta charset="UTF-8">
     <title>StudyOlle</title>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" href="/node_modules/@yaireo/tagify/dist/tagify.css">
+    <link rel="stylesheet" href="/node_modules/summernote/dist/summernote-bs4.min.css">
     <!-- <script /> 이런식으로 하면 적용 안된다. <script></script> 이런식으로 할 것 -->
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -22,6 +24,21 @@
             border: 0;
             padding: 0;
             margin: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        }
+
+        body,
+        input,
+        button,
+        select,
+        optgroup,
+        textarea,
+        .tooltip,
+        .popover {
+            font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
         }
     </style>
 </head>
@@ -56,7 +73,7 @@
                 </a>
             </li>
             <li class="nav-item" sec:authorize="isAuthenticated()">
-                <a class="nav-link btn btn-outline-primary" th:href="@{/notifications}">
+                <a class="nav-link btn btn-outline-primary" th:href="@{/new-study}">
                     <i class="fa fa-plus" aria-hidden="true"></i> 스터디 개설
                 </a>
             </li>
