@@ -84,4 +84,8 @@ public class Study {
     public boolean isManager(UserAccount userAccount) {
         return this.managers.contains(userAccount.getAccount());
     }
+
+    public void addMember(Account account) {
+        this.members.add(account);
+    }
 }
