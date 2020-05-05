@@ -89,4 +89,8 @@ public class Study {
         this.members.add(account);
     }
 
+    public String getImage() {
+        return image != null ? image : "/images/default_banner.png";
+    }
+
 }
